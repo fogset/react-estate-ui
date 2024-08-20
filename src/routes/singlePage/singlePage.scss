@@ -1,3 +1,4 @@
+@import "../../responsive.scss";
 .singlePage::-webkit-scrollbar {
     display: none;
 }
@@ -7,8 +8,15 @@
     width: 100%;
     overflow-y: scroll;
 
+    @include md {
+        flex-direction: column;
+    }
     .details {
         flex: 3;
+        @include md {
+            flex: none;
+            height: max-content;
+        }
         .wrapper {
         }
         .info {
@@ -70,6 +78,11 @@
     }
     .features {
         flex: 2;
+        @include md {
+            flex: none;
+            margin-top: 5%;
+            height: max-content;
+        }
         background-color: #fcf5f3;
         .wrapper {
             padding: 0px 20px;
@@ -123,6 +136,10 @@
             display: flex;
             justify-content: space-between;
 
+            @include lg {
+                font-size: 12px;
+            }
+
             .size {
                 display: flex;
                 align-items: center;
@@ -140,7 +157,7 @@
         .buttons {
             display: flex;
             justify-content: space-between;
-            padding-bottom: 100px;
+            padding-bottom: 5%;
             button {
                 padding: 20px;
                 display: flex;
