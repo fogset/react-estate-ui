@@ -11,13 +11,13 @@ function listPage() {
             <div className="listContainer">
                 <div className="wrapper">
                     <Filter />
-                    {data.map((item) => (
+                    {listData.map((item) => (
                         <Card key={item.id} item={item} />
                     ))}
                 </div>
             </div>
             <div className="mapContainer">
-                <Map items={data} />
+                <Map items={listData} />
             </div>
         </div>
     );
