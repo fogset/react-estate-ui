@@ -1,6 +1,10 @@
 import "./register.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../../firebase";
+import { setDoc, doc } from "firebase/firestore";
+
 function Register() {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -21,12 +25,30 @@ function Register() {
             //     password,
             // });
             // navigate("/login");
+            await createUserWithEmailAndPassword(auth, email, password);
+            const user = auth.currentUser;
+            console.log(user);
+            if (user) {
+                await setDoc(doc(db, "Users", user.uid), {
+                    email: user.email,
+                    username: username,
+                });
+                console.log("user register successfully");
+                // toast.success("User Registered Successfully!!", {
+                //     position: "top-center",
+                // });
+            }
         } catch (err) {
-            setError(err.response.data.message);
+            setError(err.message);
+            console.log(error);
+            // toast.success(error, {
+            //     position: "bottom-center",
+            // });
         } finally {
             setIsLoading(false);
         }
     };
+
     return (
         <div className="registerPage">
             <div className="formContainer">
