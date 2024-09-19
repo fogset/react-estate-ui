@@ -4,6 +4,8 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../firebase";
 import { setDoc, doc } from "firebase/firestore";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
     const [error, setError] = useState("");
@@ -34,20 +36,22 @@ function Register() {
                     username: username,
                 });
                 console.log("user register successfully");
-                // toast.success("User Registered Successfully!!", {
-                //     position: "top-center",
-                // });
+                toast.success("User Registered Successfully!!", {
+                    position: "top-center",
+                });
             }
         } catch (err) {
             setError(err.message);
             console.log(error);
-            // toast.success(error, {
-            //     position: "bottom-center",
-            // });
+            toast.error(error, {
+                position: "bottom-center",
+            });
+            notify();
         } finally {
             setIsLoading(false);
         }
     };
+    const notify = () => toast("This is a toast notification !");
 
     return (
         <div className="registerPage">

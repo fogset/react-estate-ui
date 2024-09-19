@@ -1,6 +1,8 @@
 import "./login.scss";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { auth, db } from "../../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 function Login() {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -15,20 +17,20 @@ function Login() {
         setError("");
         const formData = new FormData(e.target);
 
-        const username = formData.get("username");
+        const email = formData.get("email");
         const password = formData.get("password");
 
         try {
-            // const res = await apiRequest.post("/auth/login", {
-            //     username,
-            //     password,
-            // });
-
-            // updateUser(res.data);
-
-            navigate("/");
+            await signInWithEmailAndPassword(auth, email, password);
+            const user = auth.currentUser;
+            console.log(user);
+            if (user) {
+                console.log("user login successfully");
+                navigate("/");
+            }
         } catch (err) {
-            setError(err.response.data.message);
+            setError(err.message);
+            console.log(err);
         } finally {
             setIsLoading(false);
         }
@@ -39,12 +41,12 @@ function Login() {
                 <form onSubmit={handleSubmit}>
                     <h1>Welcome back</h1>
                     <input
-                        name="username"
+                        name="email"
                         required
                         minLength={3}
                         maxLength={20}
                         type="text"
-                        placeholder="Username"
+                        placeholder="email"
                     />
                     <input name="password" type="password" required placeholder="Password" />
                     <button disabled={isLoading}>Login</button>
